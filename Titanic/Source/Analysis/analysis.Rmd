@@ -7,6 +7,7 @@ output: rmarkdown::github_document
 
 ```{r setup, include=FALSE}
 library(ggplot2)
+train_data <- read.csv('/home/fraga/Documents/Kaggle Competitions/Titanic/Data/titanic/train.csv')
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -69,4 +70,57 @@ human lives that were lost.
 
 
 ## Taking a Look at the Data Set
+Let's start simple, how many rows and columns we have and how many NAs are there?
+
+```{r First Approach}
+head(train_data)
+names(train_data)
+dim(train_data)
+colSums(is.na.data.frame(train_data[, ]))
+```
+
+We can see that we have 177 missing values in the column Age, this means that 
+from the total rows, 19.8% are incomplete. We can also see that we have 12 
+columns and that some of them have a not numerical value, like the name column. 
+Let's start modifying the data, we'll convert age into a numerical value.  
+
+* Female = 1  
+* Male = 0  
+
+```{r Encoding Sex, echo =  FALSE}
+sex <- train_data[, 'Sex']
+encoded_sex <- c()
+
+for(i in 1:length(sex)) {
+  if(sex[i] == 'female') {
+    encoded_sex <- c(encoded_sex, 1)
+  }
+  
+  else if(sex[i] == 'male'){
+    encoded_sex <- c(encoded_sex, 0)
+  }
+}
+
+train_data[, 'Sex'] <- encoded_sex
+head(train_data[, c('Name', 'Sex')], 10)
+```
+
+Now that we fixed that, let's compare how many women survived vs how many people 
+survived.
+
+```{r Survived vs Deceased, echo = FALSE}
+survived <- which(train_data[, 'Survived'] == 1)
+male_s <- which(train_data[survived, 'Sex'] == 0)
+female_s <- which(train_data[survived, 'Sex'] == 1)
+
+print("Total survivors: ")
+print(length(survived))
+
+print("Percentage of women who survived: ")
+print(length(female_s) * 100 / length(survived))
+
+print("Percentage of men who survived: ")
+print(length(male_s) * 100 / length(survived))
+```
+
 

@@ -52,3 +52,93 @@ from military use, so it is not a fair comparison. Nevertheless, all of
 them are tragic as it were human lives that were lost.
 
 ## Taking a Look at the Data Set
+
+Let’s start simple, how many rows and columns we have and how many NAs
+are there?
+
+``` r
+head(train_data)
+```
+
+    ##   PassengerId Survived Pclass
+    ## 1           1        0      3
+    ## 2           2        1      1
+    ## 3           3        1      3
+    ## 4           4        1      1
+    ## 5           5        0      3
+    ## 6           6        0      3
+    ##                                                  Name    Sex Age SibSp Parch
+    ## 1                             Braund, Mr. Owen Harris   male  22     1     0
+    ## 2 Cumings, Mrs. John Bradley (Florence Briggs Thayer) female  38     1     0
+    ## 3                              Heikkinen, Miss. Laina female  26     0     0
+    ## 4        Futrelle, Mrs. Jacques Heath (Lily May Peel) female  35     1     0
+    ## 5                            Allen, Mr. William Henry   male  35     0     0
+    ## 6                                    Moran, Mr. James   male  NA     0     0
+    ##             Ticket    Fare Cabin Embarked
+    ## 1        A/5 21171  7.2500              S
+    ## 2         PC 17599 71.2833   C85        C
+    ## 3 STON/O2. 3101282  7.9250              S
+    ## 4           113803 53.1000  C123        S
+    ## 5           373450  8.0500              S
+    ## 6           330877  8.4583              Q
+
+``` r
+names(train_data)
+```
+
+    ##  [1] "PassengerId" "Survived"    "Pclass"      "Name"        "Sex"        
+    ##  [6] "Age"         "SibSp"       "Parch"       "Ticket"      "Fare"       
+    ## [11] "Cabin"       "Embarked"
+
+``` r
+dim(train_data)
+```
+
+    ## [1] 891  12
+
+``` r
+colSums(is.na.data.frame(train_data[, ]))
+```
+
+    ## PassengerId    Survived      Pclass        Name         Sex         Age 
+    ##           0           0           0           0           0         177 
+    ##       SibSp       Parch      Ticket        Fare       Cabin    Embarked 
+    ##           0           0           0           0           0           0
+
+We can see that we have 177 missing values in the column Age, this means
+that from the total rows, 19.8% are incomplete. We can also see that we
+have 12 columns and that some of them have a not numerical value, like
+the name column. Let’s start modifying the data, we’ll convert age into
+a numerical value.
+
+  - Female = 1  
+  - Male = 0
+
+<!-- end list -->
+
+    ##                                                   Name Sex
+    ## 1                              Braund, Mr. Owen Harris   0
+    ## 2  Cumings, Mrs. John Bradley (Florence Briggs Thayer)   1
+    ## 3                               Heikkinen, Miss. Laina   1
+    ## 4         Futrelle, Mrs. Jacques Heath (Lily May Peel)   1
+    ## 5                             Allen, Mr. William Henry   0
+    ## 6                                     Moran, Mr. James   0
+    ## 7                              McCarthy, Mr. Timothy J   0
+    ## 8                       Palsson, Master. Gosta Leonard   0
+    ## 9    Johnson, Mrs. Oscar W (Elisabeth Vilhelmina Berg)   1
+    ## 10                 Nasser, Mrs. Nicholas (Adele Achem)   1
+
+Now that we fixed that, let’s compare how many women survived vs how
+many people survived.
+
+    ## [1] "Total survivors: "
+
+    ## [1] 342
+
+    ## [1] "Percentage of women who survived: "
+
+    ## [1] 68.12865
+
+    ## [1] "Percentage of men who survived: "
+
+    ## [1] 31.87135
