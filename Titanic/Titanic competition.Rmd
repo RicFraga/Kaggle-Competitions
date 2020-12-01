@@ -1,0 +1,41 @@
+---
+title: "Titanic Competition"
+output:
+  html_document:
+    df_print: paged
+---
+
+## Exploring the data
+```{r Reading data, echo = FALSE}
+training_data <- read.csv(file = '/home/fraga/Documents/Kaggle-Competitions/Titanic/titanic/train.csv')
+
+test_data <- read.csv(file = '/home/fraga/Documents/Kaggle-Competitions/Titanic/titanic/test.csv')
+
+print("Training data")
+head(training_data)
+
+print("Test data")
+head(test_data)
+```
+
+### Checking for nas values
+```{r NAS, echo = FALSE}
+print("Training data")
+colSums(sapply(training_data, is.na))
+
+print("Test data")
+colSums(sapply(test_data, is.na))
+```
+
+We can see that there are some missing values, let's deal with this first and 
+then move on with the analysis.  
+
+```{r Filling nas with predictive models}
+complete_cases <- which(complete.cases(training_data) == TRUE)
+
+trainx_fill <- training_data[complete_cases, -c(6)]
+trainy_fill <- training_data[complete_cases, c('Age')]
+
+
+
+```
